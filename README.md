@@ -14,7 +14,7 @@ Works in Chrome, Edge, Brave, and other Chromium-based browsers.
 
 1. Visit any website without dark mode
 2. Click the extension icon in the toolbar
-3. Toggle dark mode **On** or **Off**
+3. Toggle dark mode **On** or **Off** 
 4. Your preference is saved for that domain
 
 Press `Alt + Shift + D` to toggle quickly without opening the popup.
