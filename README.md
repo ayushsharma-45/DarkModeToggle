@@ -28,4 +28,3 @@ The extension uses a CSS color-inversion technique:
 
 This works well on many sites. Complex layouts (maps, design tools, video editors) may look imperfect.
 
-## Project Structure
