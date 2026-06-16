@@ -1,101 +1,12 @@
-const { useState } = React;
-
 const VERSION = "1.0.0";
 
 function downloadExtension() {
-  window.DarkModeToggleDownload.downloadExtensionZip();
-}
+  if (window.DarkModeToggleDownload && typeof window.DarkModeToggleDownload.downloadExtensionZip === "function") {
+    window.DarkModeToggleDownload.downloadExtensionZip();
+    return;
+  }
 
-function Header() {
-  return (
-    <header className="site-header">
-      <div className="container site-header__inner">
-        <a href="#" className="logo">
-          <span className="logo__icon" aria-hidden="true">
-            🌙
-          </span>
-          Dark Mode Toggle
-        </a>
-        <nav className="nav">
-          <a href="#features">Features</a>
-          <a href="#install">Install</a>
-          <a href="#download">Download</a>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
-function HeroPreview() {
-  return (
-    <div className="hero__preview">
-      <div className="preview-window">
-        <div className="preview-window__bar">
-          <span className="dot dot--red" />
-          <span className="dot dot--yellow" />
-          <span className="dot dot--green" />
-          <span className="preview-window__url">example.com/article</span>
-        </div>
-        <div className="preview-window__body">
-          <div className="preview-card">
-            <div className="preview-card__row">
-              <div>
-                <p className="preview-card__title">Dark Mode Toggle</p>
-                <p className="preview-card__sub">example.com</p>
-              </div>
-              <div className="toggle-demo" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Hero() {
-  const [downloading, setDownloading] = useState(false);
-
-  const handleDownload = () => {
-    setDownloading(true);
-    downloadExtension();
-    window.setTimeout(() => setDownloading(false), 1200);
-  };
-
-  return (
-    <section className="hero container">
-      <div>
-        <div className="hero__badge">Free Chrome Extension · v{VERSION}</div>
-        <h1 className="hero__title">
-          Turn any website <span>dark</span> with one click
-        </h1>
-        <p className="hero__text">
-          Dark Mode Toggle adds a simple button to Chrome so you can force dark mode
-          on sites that do not offer it. Your preference is saved for each website.
-        </p>
-        <div className="hero__actions">
-          <button
-            type="button"
-            className="btn btn--primary"
-            onClick={handleDownload}
-          >
-            {downloading ? "Downloading..." : "⬇ Download Extension"}
-          </button>
-          <a href="#install" className="btn btn--ghost">
-            How to install
-          </a>
-        </div>
-        <div className="hero__meta">
-          <span>
-            <strong>Free</strong> — no store fee required
-          </span>
-          <span>
-            Shortcut: <strong>Alt + Shift + D</strong>
-          </span>
-        </div>
-      </div>
-      <HeroPreview />
-    </section>
-  );
+  window.alert("The download file is not available right now.");
 }
 
 const FEATURES = [
@@ -116,34 +27,6 @@ const FEATURES = [
   }
 ];
 
-function Features() {
-  return (
-    <section className="section" id="features">
-      <div className="container">
-        <div className="section__head">
-          <p className="section__eyebrow">Features</p>
-          <h2 className="section__title">Simple, fast, and lightweight</h2>
-          <p className="section__text">
-            Built for everyday browsing on news sites, docs, blogs, and any page without
-            a built-in dark theme.
-          </p>
-        </div>
-        <div className="features">
-          {FEATURES.map((feature) => (
-            <article className="feature-card" key={feature.title}>
-              <div className="feature-card__icon" aria-hidden="true">
-                {feature.icon}
-              </div>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 const STEPS = [
   {
     title: "Download the zip",
@@ -163,92 +46,174 @@ const STEPS = [
   }
 ];
 
-function InstallSteps() {
-  return (
-    <section className="section" id="install">
-      <div className="container">
-        <div className="section__head">
-          <p className="section__eyebrow">Install guide</p>
-          <h2 className="section__title">Get started in under a minute</h2>
-          <p className="section__text">
-            This installs locally in Chrome. No Chrome Web Store account or payment
-            needed.
-          </p>
-        </div>
-        <div className="steps">
-          {STEPS.map((step, index) => (
-            <article className="step-card" key={step.title}>
-              <div className="step-card__num">{index + 1}</div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+function featureMarkup() {
+  return FEATURES.map((feature) => `
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true">${feature.icon}</div>
+            <h3>${feature.title}</h3>
+            <p>${feature.text}</p>
+          </article>
+        `).join("");
 }
 
-function DownloadSection() {
-  const [downloading, setDownloading] = useState(false);
+function stepsMarkup() {
+  return STEPS.map((step, index) => `
+          <article class="step-card">
+            <div class="step-card__num">${index + 1}</div>
+            <h3>${step.title}</h3>
+            <p>${step.text}</p>
+          </article>
+        `).join("");
+}
 
-  const handleDownload = () => {
-    setDownloading(true);
-    downloadExtension();
-    window.setTimeout(() => setDownloading(false), 1200);
-  };
+function renderApp() {
+  const root = document.getElementById("root");
 
-  return (
-    <section className="section" id="download">
-      <div className="container">
-        <div className="download-panel">
-          <div className="download-panel__text">
-            <h2>Ready to try it?</h2>
-            <p>
-              Download the latest version of Dark Mode Toggle as a zip file, unzip it,
-              and load it in Chrome using Developer mode.
-            </p>
-            <p className="download-panel__note">
-              Works in Chrome, Edge, Brave, and other Chromium browsers.
+  if (!root) {
+    throw new Error('Missing root element: expected <div id="root"></div>.');
+  }
+
+  root.innerHTML = `
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a href="#" class="logo">
+          <span class="logo__icon" aria-hidden="true">🌙</span>
+          Dark Mode Toggle
+        </a>
+        <nav class="nav">
+          <a href="#features">Features</a>
+          <a href="#install">Install</a>
+          <a href="#download">Download</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div>
+          <div class="hero__badge">Free Chrome Extension · v${VERSION}</div>
+          <h1 class="hero__title">
+            Turn any website <span>dark</span> with one click
+          </h1>
+          <p class="hero__text">
+            Dark Mode Toggle adds a simple button to Chrome so you can force dark mode
+            on sites that do not offer it. Your preference is saved for each website.
+          </p>
+          <div class="hero__actions">
+            <button type="button" class="btn btn--primary" data-download-button="hero">
+              ⬇ Download Extension
+            </button>
+            <a href="#install" class="btn btn--ghost">
+              How to install
+            </a>
+          </div>
+          <div class="hero__meta">
+            <span>
+              <strong>Free</strong> — no store fee required
+            </span>
+            <span>
+              Shortcut: <strong>Alt + Shift + D</strong>
+            </span>
+          </div>
+        </div>
+
+        <div class="hero__preview">
+          <div class="preview-window">
+            <div class="preview-window__bar">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--yellow"></span>
+              <span class="dot dot--green"></span>
+              <span class="preview-window__url">example.com/article</span>
+            </div>
+            <div class="preview-window__body">
+              <div class="preview-card">
+                <div class="preview-card__row">
+                  <div>
+                    <p class="preview-card__title">Dark Mode Toggle</p>
+                    <p class="preview-card__sub">example.com</p>
+                  </div>
+                  <div class="toggle-demo" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section__head">
+            <p class="section__eyebrow">Features</p>
+            <h2 class="section__title">Simple, fast, and lightweight</h2>
+            <p class="section__text">
+              Built for everyday browsing on news sites, docs, blogs, and any page without
+              a built-in dark theme.
             </p>
           </div>
-          <button
-            type="button"
-            className="btn btn--primary"
-            onClick={handleDownload}
-          >
-            {downloading ? "Downloading..." : "Download .zip"}
-          </button>
+          <div class="features">
+${featureMarkup()}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-function Footer() {
-  return (
-    <footer className="site-footer">
-      <div className="container">
-        Dark Mode Toggle · Free open extension · Version {VERSION}
+      <section class="section" id="install">
+        <div class="container">
+          <div class="section__head">
+            <p class="section__eyebrow">Install guide</p>
+            <h2 class="section__title">Get started in under a minute</h2>
+            <p class="section__text">
+              This installs locally in Chrome. No Chrome Web Store account or payment
+              needed.
+            </p>
+          </div>
+          <div class="steps">
+${stepsMarkup()}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="container">
+          <div class="download-panel">
+            <div class="download-panel__text">
+              <h2>Ready to try it?</h2>
+              <p>
+                Download the latest version of Dark Mode Toggle as a zip file, unzip it,
+                and load it in Chrome using Developer mode.
+              </p>
+              <p class="download-panel__note">
+                Works in Chrome, Edge, Brave, and other Chromium browsers.
+              </p>
+            </div>
+            <button type="button" class="btn btn--primary" data-download-button="footer">
+              Download .zip
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        Dark Mode Toggle · Free open extension · Version ${VERSION}
       </div>
     </footer>
-  );
+  `;
+
+  root.querySelectorAll("[data-download-button]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const originalLabel = button.textContent;
+      button.textContent = "Downloading...";
+      button.disabled = true;
+
+      downloadExtension();
+
+      window.setTimeout(() => {
+        button.textContent = originalLabel;
+        button.disabled = false;
+      }, 1200);
+    });
+  });
 }
 
-function App() {
-  return (
-    <>
-      <Header />
-      <main>
-        <Hero />
-        <Features />
-        <InstallSteps />
-        <DownloadSection />
-      </main>
-      <Footer />
-    </>
-  );
-}
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+renderApp();
